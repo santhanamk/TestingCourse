@@ -27,8 +27,7 @@ internal class ShoppingCartTest {
         "20,100.0",
     )
     fun `Add multiple products, total price sum is correct`(
-        quantity: Int,
-        expectedPriceSum: Double
+        quantity: Int, expectedPriceSum: Double
     ) {
         // GIVEN
         val product = Product(
@@ -56,5 +55,18 @@ internal class ShoppingCartTest {
         assertFailure {
             cart.addProduct(product, -5)
         }
+    }
+
+    @Test
+    fun `isValidProduct returns invalid for not existing product`() {
+        val product = Product(
+            id = 1345,
+            name = "Ice cream",
+            price = 5.0
+        )
+        cart.addProduct(product, 4)
+
+        val totalPriceSum = cart.getTotalCost()
+        assertThat(totalPriceSum).isEqualTo(0.0)
     }
 }
