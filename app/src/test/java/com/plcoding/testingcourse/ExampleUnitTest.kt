@@ -6,6 +6,7 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Test
 
 /**
@@ -26,7 +27,7 @@ class ExampleUnitTest {
 
     }
 
-    @Test
+    @RepeatedTest(50)
     fun addition_isCorrect() {
         assertThat(2 + 2).isEqualTo(4)
     }
