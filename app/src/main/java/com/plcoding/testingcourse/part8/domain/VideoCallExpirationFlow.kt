@@ -1,5 +1,7 @@
 package com.plcoding.testingcourse.part8.domain
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -10,8 +12,10 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import java.time.Clock
 
+@RequiresApi(Build.VERSION_CODES.O)
 class VideoCallExpirationFlow(
     private val calls: List<ScheduledVideoCall>,
+    private val clock: Clock = Clock.systemDefaultZone()
 ): Flow<List<ScheduledVideoCall>> {
 
     private fun tickerFlow() = flow {
@@ -21,11 +25,12 @@ class VideoCallExpirationFlow(
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun collect(collector: FlowCollector<List<ScheduledVideoCall>>) {
         tickerFlow()
             .flowOn(Dispatchers.Main)
             .map {
-                calls.filter { it.isExpired() }
+                calls.filter { it.isExpired(clock) }
             }
             .distinctUntilChanged()
             .collect(collector)
